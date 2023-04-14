@@ -3,6 +3,33 @@ const Todo = require('../models/Todo');
 
 const router = express.Router();
 
+/**
+ * CREATE a new todo
+ */
+router.post('/todos', async (req, res) => {
+  const todo = new Todo({
+    title: req.body.title,
+    description: req.body.description,
+  });
+
+  await todo.save();
+  res.json(todo);
+});
+
+/**
+ * READ single todo by id
+ */
+router.get('/todos/:id', async (req, res) => {
+  const { id } = req.params;
+  const todo = await Todo.findById(id);
+
+  res.json(todo);
+});
+
+/**
+ * READ multiple todos
+ * (optional) include limit and page
+ */
 router.get('/todos', async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
@@ -16,20 +43,13 @@ router.get('/todos', async (req, res) => {
   res.json({
     todos,
     totalPages: Math.ceil(count / limit),
-    currentPage: page,
+    currentPage: parseInt(page, 10),
   });
 });
 
-router.post('/todos', async (req, res) => {
-  const todo = new Todo({
-    title: req.body.title,
-    description: req.body.description,
-  });
-
-  await todo.save();
-  res.json(todo);
-});
-
+/**
+ * UPDATE todo by id
+ */
 router.patch('/todos/:id', async (req, res) => {
   const { id } = req.params;
   const { completed } = req.body;
@@ -43,6 +63,9 @@ router.patch('/todos/:id', async (req, res) => {
   res.json(todo);
 });
 
+/**
+ * DELETE todo by id
+ */
 router.delete('/todos/:id', async (req, res) => {
   const { id } = req.params;
 
