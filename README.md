@@ -3,7 +3,7 @@ A simple todo app
 
 ## Requirements
 
-* Node 8
+* Node
 * Git
 * MongoDB
 
