@@ -27,7 +27,12 @@ router.get('/todos/:id', async (req, res) => {
     const { id } = req.params;
     const todo = await Todo.findById(id);
 
-    res.status(200).json(todo);
+    if (todo === null) {
+      return res.status(200).json({
+        'message': 'todo does not exist'
+      });
+    }
+    return res.status(200).json(todo);
   } catch (error) {
     return res.status(500).json({error});
   }
@@ -46,7 +51,7 @@ router.get('/todos', async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
-
+    
     const count = await Todo.countDocuments();
 
     res.status(200).json({
