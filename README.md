@@ -25,3 +25,9 @@ To start the express server, run the following
 ```bash
 npm start
 ```
+
+To run the unit test, run the following
+
+```bash
+npm test
+```
