@@ -1,7 +1,9 @@
-const Todo = require('../../models/Todo');
+const Todo = require('../../models/modelTodo');
+const { createTodoSchema } = require('../../libraries/libValidate'); 
 
 async function createTodo(req, res) {
     try {
+        await createTodoSchema.validateAsync(req.body);
         const todo = new Todo({
             title: req.body.title,
             description: req.body.description,
